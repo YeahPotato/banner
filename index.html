@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Parcel Sandbox</title>
+	<meta charset="UTF-8" />
+	<link href="./src/styles.css"></link>
+	<link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="app">
+		<div class="banner">
+			<span class="prev">
+				<i class="fa fa-arrow-left"></i>
+			</span>
+			<span class="next">
+				<i class="fa fa-arrow-right"></i>
+			</span>
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+			<ol class="doc">
+				<li class="active"></li>
+				<li></li>
+				<li></li>
+			</ol>
+		</div>
+	</div>
+
+	<script>
+		window.onload = function(){
+			let index = 0;
+			let wrap = document.querySelector('.banner')
+			let doc = document.querySelectorAll(".doc li");
+			let banner = document.querySelector('ul')
+			let prev = document.querySelector(".prev");
+			let next = document.querySelector(".next");
+			let timer = null
+
+			wrap.addEventListener('mouseenter',function(){
+				clearInterval(timer)
+			},false)
+
+			wrap.addEventListener('mouseleave',function(){
+				autoPlay()
+			},false)
+			
+			// 设置banner动画效果
+			banner.style.transition = '.6s all ease-out';
+
+			//  上一步 下一步
+			prev.addEventListener('click',function(){
+				index-=1
+				toggleBanner(index)
+			},false)
+			next.addEventListener('click',function(){
+				index+=1
+				toggleBanner(index)
+			},false)
+
+			// 点击切换
+			Array.from(doc).forEach((v,m)=>{
+				v.addEventListener('click',function(){
+					index = m
+					toggleBanner(index)
+				},false)
+			})
+
+			// 切换一张banner
+			function toggleBanner(i) {
+				if (i > 2 ) index = 0;
+				if( i < 0) index = 2;
+				Array.from(doc).forEach(v => {
+					v.className = "";
+				});
+				doc[index].className = "active";
+				moveBanner(index)
+			}
+
+			// 移动banner
+			function moveBanner(index){
+				banner.style.transform = `translateX(-${index * 600}px)`
+			}
+
+			// 自动播放
+			function autoPlay(){
+				timer = setInterval(()=>{
+					index+=1
+					toggleBanner(index)
+				},2000)
+			}
+			
+			autoPlay()
+		}
+	</script>
+</body>
+
+
+</html>
